@@ -1,2 +1,2 @@
 # go-trello
-Web app based on trello architecture and logic 
+Web app based on trello work logic 

@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -8,7 +9,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var jwtSecret = []byte("superstructure") // Make sure this matches your token generation secret
+var jwtSecret = []byte("superstructure") // Ensure this matches your token generation secret
 
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -28,9 +29,12 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		tokenString := parts[1]
 
-		// Verify token with correct secret key
+		// Parse the token
 		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-			return jwtSecret, nil // This should match the secret key used to sign tokens
+			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+				return nil, fmt.Errorf("unexpected signing method")
+			}
+			return jwtSecret, nil
 		})
 
 		if err != nil || !token.Valid {
@@ -38,6 +42,24 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
+
+		// Extract claims
+		claims, ok := token.Claims.(jwt.MapClaims)
+		if !ok {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token claims"})
+			c.Abort()
+			return
+		}
+
+		username, exists := claims["username"].(string)
+		if !exists {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Username not found in token"})
+			c.Abort()
+			return
+		}
+
+		// Set only username in the context
+		c.Set("username", username)
 
 		c.Next()
 	}

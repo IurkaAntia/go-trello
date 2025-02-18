@@ -1,4 +1,4 @@
-import List from './List';
+import List from '../components/List.tsx';
 
 const Board = ({ board }: { board: { title: string; lists: { id: string; title: string; cards: { [key: string]: any; id: string }[] }[] } }) => {
     return (

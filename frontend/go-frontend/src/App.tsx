@@ -1,60 +1,32 @@
-import { useState, useEffect } from 'react';
-import Board from './components/Board';
-import List from './components/List';
-import {fetchBoards} from "./api.ts";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import Dashboard from "./pages/Dashboard";
+import Board from "./pages/Board";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import PublicRoute from "./components/auth/PublicRoute";
 
-const App = () => {
-    interface ListType {
-        id: string;
-        title: string;
-        cards: { id: string; title: string; content: string }[];
-    }
-
-    interface BoardType {
-        id: string;
-        name: string;
-        lists: ListType[];
-    }
-
-    const [boards, setBoards] = useState<BoardType[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    // Fetch data from backend
-
-
-    // UseEffect to fetch data when the component mounts
-    useEffect(() => {
-        fetchBoards().then(r => {
-            setBoards(r);
-        }).then(() => setLoading(false));
-    }, []);
-
-    // Loading state
-    if (loading) {
-        return <div className="text-center">Loading...</div>;
-    }
-    
+function App() {
     return (
-        <div className="App p-8 bg-gray-200 min-h-screen">
-            <h1 className="text-4xl font-bold mb-8">Trello-like App</h1>
-            <div className="flex space-x-8">
-                {boards.map(board => (
-                    <div key={board.id} className="flex flex-col space-y-4">
-                        <Board board={board} />
+        <Router>
+            <Routes>
+                <Route path="/" element={<Home />} />
 
-                        <div className="flex space-x-4" key={board.id}>
-                            {board.lists && board.lists.map(list => (
-                                <List key={list.id} list={list} />
+                {/* Public Routes (Redirect logged-in users) */}
+                <Route element={<PublicRoute />}>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                </Route>
 
-                            ))}
-
-
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </div>
+                {/* Protected Routes (Require Auth) */}
+                <Route element={<ProtectedRoute />}>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/board/:id" element={<Board />} />
+                </Route>
+            </Routes>
+        </Router>
     );
-};
+}
 
 export default App;

@@ -97,14 +97,19 @@ export const loginUser = async (username: string, password: string) => {
 
 
 export const fetchBoards = async () => {
-    const token = localStorage.getItem('token');
-
-    const response = await axios.get(`${API_URL}/api/boards`, {
-        headers: {
-            "Authorization": `Bearer ${token}`,
-        }
-    });
-    return response.data;
+    const token =  localStorage.getItem('token');
+    try {
+        const response = await axios.get("/api/boards", {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        });
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Failed to fetch boards:", error);
+    }
 };
 
 export const getCurrentUser = async () => {
@@ -127,8 +132,3 @@ export const getCurrentUser = async () => {
     }
 };
 
-export const logoutUser = async () => {
-    const response = await axios.get(`${API_URL}/api/logout`, {
-
-    })
-}

@@ -30,6 +30,7 @@ func SetupRouter() *gin.Engine {
 	api.GET("/users", controllers.GetUsers)
 	api.GET("/me", controllers.GetMe)
 	api.POST("/users", controllers.CreateUser)
+	
 	// Board management
 	api.GET("/boards", controllers.GetBoards)
 	api.POST("/boards", controllers.AddList)

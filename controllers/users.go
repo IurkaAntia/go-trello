@@ -3,12 +3,13 @@ package controllers
 import (
 	"Go-Project/database"
 	"Go-Project/models"
+	"Go-Project/resources"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
 func GetUsers(c *gin.Context) {
-	var users []models.User
+	var users []resources.User
 	database.DB.Find(&users)
 	c.JSON(http.StatusOK, users)
 
@@ -34,7 +35,7 @@ func GetMe(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"id": user.ID, "username": user.Username, "email": user.Email})
+	c.JSON(http.StatusOK, gin.H{"id": user.ID, "username": user.Username})
 }
 
 func CreateUser(c *gin.Context) {

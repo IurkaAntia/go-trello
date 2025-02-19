@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { Menu, X } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import {useState} from "react";
+import {Menu, X} from "lucide-react";
+import {Link, useNavigate} from "react-router-dom";
 
 interface SidebarProps {
-    menuOpen?: boolean;
+    menuOpen?: boolean,
 }
 
-const Sidebar = ({ menuOpen }: SidebarProps) => {
-    const [isOpen, setIsOpen] = useState(false);
+const Sidebar = ({menuOpen}: SidebarProps) => {
+    const [isOpen, setIsOpen] = useState(menuOpen);
     const navigate = useNavigate();
 
     // Logout function with debugging logs
@@ -24,7 +24,7 @@ const Sidebar = ({ menuOpen }: SidebarProps) => {
                 onClick={() => setIsOpen(!isOpen)}
                 className="text-white p-2 rounded-lg bg-gray-800 hover:bg-gray-700 focus:outline-none transition"
             >
-                {isOpen ? <X size={28} /> : <Menu size={28} />}
+                {isOpen ? <X size={28}/> : <Menu size={28}/>}
             </button>
 
             {/* Sidebar Menu */}
@@ -39,7 +39,7 @@ const Sidebar = ({ menuOpen }: SidebarProps) => {
                         onClick={() => setIsOpen(false)}
                         className="text-white hover:text-gray-300"
                     >
-                        <X size={28} />
+                        <X size={28}/>
                     </button>
                 </div>
 
@@ -94,7 +94,7 @@ const Sidebar = ({ menuOpen }: SidebarProps) => {
             {/* Overlay when open */}
             {isOpen && (
                 <div
-                    
+
                     onClick={() => setIsOpen(false)}
                 ></div>
             )}

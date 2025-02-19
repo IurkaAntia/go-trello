@@ -1,4 +1,4 @@
-
+import { Key } from 'react';
 import Card from './Card';
 
 interface CardProps {
@@ -13,13 +13,13 @@ interface ListProps {
     cards: CardProps[];
 }
 
-const List = ({ list }: ListProps[]) => {
+const List = ({list}: ListProps[]) => {
     return (
         <div className="bg-gray-50 p-4 rounded-lg shadow-md">
             <h3 className="text-2xl font-semibold text-gray-700 mb-4">{list.title}</h3>
             <div className="space-y-4">
-                {list.cards.map((card) => (
-                    <Card key={card.id} card={card} />
+                {list.cards.map((card :CardProps) => (
+                    <Card key={card.id} card={card}/>
                 ))}
             </div>
         </div>

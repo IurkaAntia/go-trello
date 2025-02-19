@@ -24,7 +24,7 @@ const Boards = () => {
                 setBoards(data);
             }
         };
-        loadBoards();
+        loadBoards().then(r => r);
     }, []);
 
     return (

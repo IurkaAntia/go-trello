@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
-import { fetchBoards, getUsers, getCurrentUser } from "../api";
-import Sidebar from "../components/Sidebar";
-import { Menu, UserCircle } from "lucide-react";
+import { fetchBoards } from "../api";
 
 const Dashboard = () => {
-
 
     const [boards, setBoards] = useState<any[]>([]);
 
@@ -18,7 +15,7 @@ const Dashboard = () => {
             setBoards(boardsData);
         };
 
-        fetchData();
+        fetchData().then(r => r);
     }, []);
 
     return (
